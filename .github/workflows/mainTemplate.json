@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.4.1008.15138",
-      "templateHash": "12332786085499410203"
+      "version": "0.4.451.19169",
+      "templateHash": "14288884729926456994"
     }
   },
   "parameters": {
@@ -688,7 +688,7 @@
   "variables": {
     "const_appGatewaySSLCertOptionHaveCert": "haveCert",
     "const_appGatewaySSLCertOptionHaveKeyVault": "haveKeyVault",
-    "const_azureSubjectName": "[format('{0}', format('{0}.{1}.{2}', variables('name_domainLabelforApplicationGateway'), parameters('location'), 'cloudapp.azure.com'))]",
+    "const_azureSubjectName": "[format('{0}.{1}.{2}', variables('name_domainLabelforApplicationGateway'), parameters('location'), 'cloudapp.azure.com')]",
     "const_hasTags": "[contains(resourceGroup(), 'tags')]",
     "const_bCreateNewKeyVault": "[and(or(or(not(variables('const_hasTags')), not(contains(resourceGroup().tags, variables('name_tagNameForKeyVault')))), empty(resourceGroup().tags.wlsKeyVault)), or(and(parameters('enableCustomSSL'), not(equals(parameters('sslConfigurationAccessOption'), variables('const_wlsSSLCertOptionKeyVault')))), and(parameters('enableAppGWIngress'), not(equals(parameters('appGatewayCertificateOption'), variables('const_appGatewaySSLCertOptionHaveKeyVault'))))))]",
     "const_defaultKeystoreType": "PKCS12",
@@ -700,11 +700,11 @@
     "const_wlsJavaOptions": "[if(equals(parameters('wlsJavaOption'), ''), 'null', parameters('wlsJavaOption'))]",
     "const_wlsSSLCertOptionKeyVault": "keyVaultStoredConfig",
     "name_defaultPidDeployment": "pid",
-    "name_dnsNameforApplicationGateway": "[format('{0}', concat(parameters('dnsNameforApplicationGateway'), take(parameters('utcValue'), 6)))]",
-    "name_domainLabelforApplicationGateway": "[format('{0}', take(concat(variables('name_dnsNameforApplicationGateway'), '-', toLower(variables('name_rgNameWithoutSpecialCharacter')), '-', toLower(parameters('wlsDomainName'))), 63))]",
+    "name_dnsNameforApplicationGateway": "[concat(parameters('dnsNameforApplicationGateway'), take(parameters('utcValue'), 6))]",
+    "name_domainLabelforApplicationGateway": "[take(concat(variables('name_dnsNameforApplicationGateway'), '-', toLower(variables('name_rgNameWithoutSpecialCharacter')), '-', toLower(parameters('wlsDomainName'))), 63)]",
     "name_identityKeyStoreDataSecret": "[if(equals(parameters('sslConfigurationAccessOption'), variables('const_wlsSSLCertOptionKeyVault')), parameters('sslKeyVaultCustomIdentityKeyStoreDataSecretName'), 'myIdentityKeyStoreData')]",
     "name_identityKeyStorePswSecret": "[if(equals(parameters('sslConfigurationAccessOption'), variables('const_wlsSSLCertOptionKeyVault')), parameters('sslKeyVaultCustomIdentityKeyStorePassPhraseSecretName'), 'myIdentityKeyStorePsw')]",
-    "name_keyVaultName": "[if(empty(variables('const_keyvaultNameFromTag')), format('{0}', take(concat('wls-kv', uniqueString(parameters('utcValue'))), 24)), resourceGroup().tags.wlsKeyVault)]",
+    "name_keyVaultName": "[if(empty(variables('const_keyvaultNameFromTag')), take(concat('wls-kv', uniqueString(parameters('utcValue'))), 24), resourceGroup().tags.wlsKeyVault)]",
     "name_privateKeyAliasSecret": "[if(equals(parameters('sslConfigurationAccessOption'), variables('const_wlsSSLCertOptionKeyVault')), parameters('sslKeyVaultPrivateKeyAliasSecretName'), 'privateKeyAlias')]",
     "name_privateKeyPswSecret": "[if(equals(parameters('sslConfigurationAccessOption'), variables('const_wlsSSLCertOptionKeyVault')), parameters('sslKeyVaultPrivateKeyPassPhraseSecretName'), 'privateKeyPsw')]",
     "name_rgNameWithoutSpecialCharacter": "[replace(replace(replace(replace(resourceGroup().name, '.', ''), '(', ''), ')', ''), '_', '')]",
@@ -721,8 +721,8 @@
       "name": "default",
       "properties": {
         "tags": {
-          "[format('{0}', variables('name_tagNameForKeyVault'))]": "[if(variables('const_bCreateNewKeyVault'), variables('name_keyVaultName'), variables('const_keyvaultNameFromTag'))]",
-          "[format('{0}', variables('name_tagNameForStorageAccount'))]": "[if(or(and(or(parameters('createAKSCluster'), not(and(not(parameters('createAKSCluster')), not(equals(reference('query-existing-storage-account').outputs.storageAccount.value, 'null'))))), variables('const_enablePV')), and(not(parameters('createAKSCluster')), not(equals(reference('query-existing-storage-account').outputs.storageAccount.value, 'null')))), if(and(not(parameters('createAKSCluster')), not(equals(reference('query-existing-storage-account').outputs.storageAccount.value, 'null'))), reference('query-existing-storage-account').outputs.storageAccount.value, format('wls{0}', uniqueString(parameters('utcValue')))), '')]"
+          "[variables('name_tagNameForKeyVault')]": "[if(variables('const_bCreateNewKeyVault'), variables('name_keyVaultName'), variables('const_keyvaultNameFromTag'))]",
+          "[variables('name_tagNameForStorageAccount')]": "[if(or(and(or(parameters('createAKSCluster'), not(and(not(parameters('createAKSCluster')), not(equals(reference('query-existing-storage-account').outputs.storageAccount.value, 'null'))))), variables('const_enablePV')), and(not(parameters('createAKSCluster')), not(equals(reference('query-existing-storage-account').outputs.storageAccount.value, 'null')))), if(and(not(parameters('createAKSCluster')), not(equals(reference('query-existing-storage-account').outputs.storageAccount.value, 'null'))), reference('query-existing-storage-account').outputs.storageAccount.value, format('wls{0}', uniqueString(parameters('utcValue')))), '')]"
         }
       },
       "dependsOn": [
@@ -731,7 +731,7 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2020-06-01",
+      "apiVersion": "2019-10-01",
       "name": "initialization",
       "properties": {
         "expressionEvaluationOptions": {
@@ -744,8 +744,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.1008.15138",
-              "templateHash": "8805472380936134177"
+              "version": "0.4.451.19169",
+              "templateHash": "271164630090628396"
             }
           },
           "parameters": {
@@ -759,7 +759,7 @@
             {
               "condition": "[not(equals(parameters('name'), 'pid'))]",
               "type": "Microsoft.Resources/deployments",
-              "apiVersion": "2020-06-01",
+              "apiVersion": "2019-10-01",
               "name": "[parameters('name')]",
               "properties": {
                 "expressionEvaluationOptions": {
@@ -772,8 +772,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.4.1008.15138",
-                      "templateHash": "14669053462841078328"
+                      "version": "0.4.451.19169",
+                      "templateHash": "4589167010597738390"
                     }
                   },
                   "functions": [],
@@ -829,7 +829,7 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2020-06-01",
+      "apiVersion": "2019-10-01",
       "name": "pid-a1775ed4-512c-4cfa-9e68-f0b09b36de90-partnercenter",
       "properties": {
         "expressionEvaluationOptions": {
@@ -842,8 +842,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.1008.15138",
-              "templateHash": "14669053462841078328"
+              "version": "0.4.451.19169",
+              "templateHash": "4589167010597738390"
             }
           },
           "functions": [],
@@ -853,7 +853,7 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2020-06-01",
+      "apiVersion": "2019-10-01",
       "name": "validate-parameters-and-fail-fast",
       "properties": {
         "expressionEvaluationOptions": {
@@ -1009,8 +1009,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.1008.15138",
-              "templateHash": "11875485554596819261"
+              "version": "0.4.451.19169",
+              "templateHash": "12750188763167065871"
             }
           },
           "parameters": {
@@ -1326,7 +1326,7 @@
     {
       "condition": "[and(parameters('enableCustomSSL'), not(equals(parameters('sslConfigurationAccessOption'), variables('const_wlsSSLCertOptionKeyVault'))))]",
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2020-06-01",
+      "apiVersion": "2019-10-01",
       "name": "upload-wls-ssl-cert-to-keyvault",
       "properties": {
         "expressionEvaluationOptions": {
@@ -1383,8 +1383,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.1008.15138",
-              "templateHash": "1514780095156618618"
+              "version": "0.4.451.19169",
+              "templateHash": "1414067259151009795"
             }
           },
           "parameters": {
@@ -1544,7 +1544,7 @@
     {
       "condition": "[not(parameters('createAKSCluster'))]",
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2020-06-01",
+      "apiVersion": "2019-10-01",
       "name": "query-existing-storage-account",
       "properties": {
         "expressionEvaluationOptions": {
@@ -1568,8 +1568,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.1008.15138",
-              "templateHash": "15003635686111380403"
+              "version": "0.4.451.19169",
+              "templateHash": "2335635493618675310"
             }
           },
           "parameters": {
@@ -1625,7 +1625,7 @@
     {
       "condition": "[not(parameters('enableCustomSSL'))]",
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2020-06-01",
+      "apiVersion": "2019-10-01",
       "name": "setup-wls-cluster",
       "properties": {
         "expressionEvaluationOptions": {
@@ -1640,10 +1640,10 @@
             "value": "[parameters('_artifactsLocationSasToken')]"
           },
           "_pidEnd": {
-            "value": "[if(equals(reference(resourceId('Microsoft.Resources/deployments', 'initialization'), '2020-06-01').outputs.wlsAKSEnd.value, ''), variables('name_defaultPidDeployment'), reference(resourceId('Microsoft.Resources/deployments', 'initialization'), '2020-06-01').outputs.wlsAKSEnd.value)]"
+            "value": "[if(equals(reference(resourceId('Microsoft.Resources/deployments', 'initialization'), '2019-10-01').outputs.wlsAKSEnd.value, ''), variables('name_defaultPidDeployment'), reference(resourceId('Microsoft.Resources/deployments', 'initialization'), '2019-10-01').outputs.wlsAKSEnd.value)]"
           },
           "_pidStart": {
-            "value": "[if(equals(reference(resourceId('Microsoft.Resources/deployments', 'initialization'), '2020-06-01').outputs.wlsAKSStart.value, ''), variables('name_defaultPidDeployment'), reference(resourceId('Microsoft.Resources/deployments', 'initialization'), '2020-06-01').outputs.wlsAKSStart.value)]"
+            "value": "[if(equals(reference(resourceId('Microsoft.Resources/deployments', 'initialization'), '2019-10-01').outputs.wlsAKSStart.value, ''), variables('name_defaultPidDeployment'), reference(resourceId('Microsoft.Resources/deployments', 'initialization'), '2019-10-01').outputs.wlsAKSStart.value)]"
           },
           "aciResourcePermissions": {
             "value": "[parameters('aciResourcePermissions')]"
@@ -1802,8 +1802,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.1008.15138",
-              "templateHash": "1033344631092920833"
+              "version": "0.4.451.19169",
+              "templateHash": "5931634256845381784"
             }
           },
           "parameters": {
@@ -2116,7 +2116,7 @@
           "resources": [
             {
               "type": "Microsoft.Resources/deployments",
-              "apiVersion": "2020-06-01",
+              "apiVersion": "2019-10-01",
               "name": "wls-aks-start-pid-deployment",
               "properties": {
                 "expressionEvaluationOptions": {
@@ -2134,8 +2134,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.4.1008.15138",
-                      "templateHash": "8805472380936134177"
+                      "version": "0.4.451.19169",
+                      "templateHash": "271164630090628396"
                     }
                   },
                   "parameters": {
@@ -2149,7 +2149,7 @@
                     {
                       "condition": "[not(equals(parameters('name'), 'pid'))]",
                       "type": "Microsoft.Resources/deployments",
-                      "apiVersion": "2020-06-01",
+                      "apiVersion": "2019-10-01",
                       "name": "[parameters('name')]",
                       "properties": {
                         "expressionEvaluationOptions": {
@@ -2162,8 +2162,8 @@
                           "metadata": {
                             "_generator": {
                               "name": "bicep",
-                              "version": "0.4.1008.15138",
-                              "templateHash": "14669053462841078328"
+                              "version": "0.4.451.19169",
+                              "templateHash": "4589167010597738390"
                             }
                           },
                           "functions": [],
@@ -2220,7 +2220,7 @@
             {
               "condition": "[parameters('createAKSCluster')]",
               "type": "Microsoft.Resources/deployments",
-              "apiVersion": "2020-06-01",
+              "apiVersion": "2019-10-01",
               "name": "aks-cluster-deployment",
               "properties": {
                 "expressionEvaluationOptions": {
@@ -2265,8 +2265,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.4.1008.15138",
-                      "templateHash": "1662521445991274672"
+                      "version": "0.4.451.19169",
+                      "templateHash": "5611877322241045749"
                     }
                   },
                   "parameters": {
@@ -2440,7 +2440,7 @@
                       "name": "[variables('name_aksClusterNameForSV')]",
                       "location": "[parameters('location')]",
                       "properties": {
-                        "kubernetesVersion": "[format('{0}', parameters('aksVersion'))]",
+                        "kubernetesVersion": "[parameters('aksVersion')]",
                         "dnsPrefix": "[format('{0}-dns', variables('name_aksClusterNameForSV'))]",
                         "agentPoolProfiles": [
                           {
@@ -2469,7 +2469,7 @@
                             "enabled": false
                           },
                           "omsAgent": {
-                            "enabled": "[bool(format('{0}', parameters('enableAzureMonitoring')))]"
+                            "enabled": "[bool(parameters('enableAzureMonitoring'))]"
                           }
                         },
                         "enableRBAC": true,
@@ -2486,7 +2486,7 @@
                   "outputs": {
                     "aksClusterName": {
                       "type": "string",
-                      "value": "[if(equals(format('{0}', parameters('aksVersion')), 'default'), variables('name_aksClusterNameDefault'), variables('name_aksClusterNameForSV'))]"
+                      "value": "[if(equals(parameters('aksVersion'), 'default'), variables('name_aksClusterNameDefault'), variables('name_aksClusterNameForSV'))]"
                     }
                   }
                 }
@@ -2498,7 +2498,7 @@
             {
               "condition": "[and(parameters('useOracleImage'), parameters('createACR'))]",
               "type": "Microsoft.Resources/deployments",
-              "apiVersion": "2020-06-01",
+              "apiVersion": "2019-10-01",
               "name": "acr-deployment",
               "properties": {
                 "expressionEvaluationOptions": {
@@ -2516,8 +2516,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.4.1008.15138",
-                      "templateHash": "16999541500289008629"
+                      "version": "0.4.451.19169",
+                      "templateHash": "11369643611717351639"
                     }
                   },
                   "parameters": {
@@ -2589,7 +2589,7 @@
             {
               "condition": "[parameters('createStorageAccount')]",
               "type": "Microsoft.Resources/deployments",
-              "apiVersion": "2020-06-01",
+              "apiVersion": "2019-10-01",
               "name": "storage-deployment",
               "properties": {
                 "expressionEvaluationOptions": {
@@ -2610,8 +2610,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.4.1008.15138",
-                      "templateHash": "9546408933814304658"
+                      "version": "0.4.451.19169",
+                      "templateHash": "10691680331846265643"
                     }
                   },
                   "parameters": {
@@ -2689,7 +2689,7 @@
             },
             {
               "type": "Microsoft.Resources/deployments",
-              "apiVersion": "2020-06-01",
+              "apiVersion": "2019-10-01",
               "name": "wls-domain-deployment",
               "properties": {
                 "expressionEvaluationOptions": {
@@ -2707,10 +2707,10 @@
                     "value": "[if(parameters('createAKSCluster'), resourceGroup().name, parameters('aksClusterRGName'))]"
                   },
                   "aksClusterName": {
-                    "value": "[if(parameters('createAKSCluster'), reference(resourceId('Microsoft.Resources/deployments', 'aks-cluster-deployment'), '2020-06-01').outputs.aksClusterName.value, parameters('aksClusterName'))]"
+                    "value": "[if(parameters('createAKSCluster'), reference(resourceId('Microsoft.Resources/deployments', 'aks-cluster-deployment'), '2019-10-01').outputs.aksClusterName.value, parameters('aksClusterName'))]"
                   },
                   "acrName": {
-                    "value": "[if(parameters('useOracleImage'), if(parameters('createACR'), reference(resourceId('Microsoft.Resources/deployments', 'acr-deployment'), '2020-06-01').outputs.acrName.value, parameters('acrName')), parameters('userProvidedAcr'))]"
+                    "value": "[if(parameters('useOracleImage'), if(parameters('createACR'), reference(resourceId('Microsoft.Resources/deployments', 'acr-deployment'), '2019-10-01').outputs.acrName.value, parameters('acrName')), parameters('userProvidedAcr'))]"
                   },
                   "appPackageUrls": {
                     "value": "[parameters('appPackageUrls')]"
@@ -2821,8 +2821,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.4.1008.15138",
-                      "templateHash": "8791274137507390004"
+                      "version": "0.4.451.19169",
+                      "templateHash": "3151468794570433678"
                     }
                   },
                   "parameters": {
@@ -3041,7 +3041,7 @@
             },
             {
               "type": "Microsoft.Resources/deployments",
-              "apiVersion": "2020-06-01",
+              "apiVersion": "2019-10-01",
               "name": "wls-aks-end-pid-deployment",
               "properties": {
                 "expressionEvaluationOptions": {
@@ -3059,8 +3059,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.4.1008.15138",
-                      "templateHash": "8805472380936134177"
+                      "version": "0.4.451.19169",
+                      "templateHash": "271164630090628396"
                     }
                   },
                   "parameters": {
@@ -3074,7 +3074,7 @@
                     {
                       "condition": "[not(equals(parameters('name'), 'pid'))]",
                       "type": "Microsoft.Resources/deployments",
-                      "apiVersion": "2020-06-01",
+                      "apiVersion": "2019-10-01",
                       "name": "[parameters('name')]",
                       "properties": {
                         "expressionEvaluationOptions": {
@@ -3087,8 +3087,8 @@
                           "metadata": {
                             "_generator": {
                               "name": "bicep",
-                              "version": "0.4.1008.15138",
-                              "templateHash": "14669053462841078328"
+                              "version": "0.4.451.19169",
+                              "templateHash": "4589167010597738390"
                             }
                           },
                           "functions": [],
@@ -3149,7 +3149,7 @@
           "outputs": {
             "aksClusterName": {
               "type": "string",
-              "value": "[if(parameters('createAKSCluster'), reference(resourceId('Microsoft.Resources/deployments', 'aks-cluster-deployment'), '2020-06-01').outputs.aksClusterName.value, parameters('aksClusterName'))]"
+              "value": "[if(parameters('createAKSCluster'), reference(resourceId('Microsoft.Resources/deployments', 'aks-cluster-deployment'), '2019-10-01').outputs.aksClusterName.value, parameters('aksClusterName'))]"
             },
             "aksClusterRGName": {
               "type": "string",
@@ -3183,7 +3183,7 @@
     {
       "condition": "[parameters('enableCustomSSL')]",
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2020-06-01",
+      "apiVersion": "2019-10-01",
       "name": "setup-wls-cluster-with-custom-ssl-enabled",
       "properties": {
         "expressionEvaluationOptions": {
@@ -3198,10 +3198,10 @@
             "value": "[parameters('_artifactsLocationSasToken')]"
           },
           "_pidEnd": {
-            "value": "[if(equals(reference(resourceId('Microsoft.Resources/deployments', 'initialization'), '2020-06-01').outputs.wlsAKSEnd.value, ''), variables('name_defaultPidDeployment'), reference(resourceId('Microsoft.Resources/deployments', 'initialization'), '2020-06-01').outputs.wlsAKSEnd.value)]"
+            "value": "[if(equals(reference(resourceId('Microsoft.Resources/deployments', 'initialization'), '2019-10-01').outputs.wlsAKSEnd.value, ''), variables('name_defaultPidDeployment'), reference(resourceId('Microsoft.Resources/deployments', 'initialization'), '2019-10-01').outputs.wlsAKSEnd.value)]"
           },
           "_pidStart": {
-            "value": "[if(equals(reference(resourceId('Microsoft.Resources/deployments', 'initialization'), '2020-06-01').outputs.wlsAKSStart.value, ''), variables('name_defaultPidDeployment'), reference(resourceId('Microsoft.Resources/deployments', 'initialization'), '2020-06-01').outputs.wlsAKSStart.value)]"
+            "value": "[if(equals(reference(resourceId('Microsoft.Resources/deployments', 'initialization'), '2019-10-01').outputs.wlsAKSStart.value, ''), variables('name_defaultPidDeployment'), reference(resourceId('Microsoft.Resources/deployments', 'initialization'), '2019-10-01').outputs.wlsAKSStart.value)]"
           },
           "aciResourcePermissions": {
             "value": "[parameters('aciResourcePermissions')]"
@@ -3390,8 +3390,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.1008.15138",
-              "templateHash": "1033344631092920833"
+              "version": "0.4.451.19169",
+              "templateHash": "5931634256845381784"
             }
           },
           "parameters": {
@@ -3704,7 +3704,7 @@
           "resources": [
             {
               "type": "Microsoft.Resources/deployments",
-              "apiVersion": "2020-06-01",
+              "apiVersion": "2019-10-01",
               "name": "wls-aks-start-pid-deployment",
               "properties": {
                 "expressionEvaluationOptions": {
@@ -3722,8 +3722,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.4.1008.15138",
-                      "templateHash": "8805472380936134177"
+                      "version": "0.4.451.19169",
+                      "templateHash": "271164630090628396"
                     }
                   },
                   "parameters": {
@@ -3737,7 +3737,7 @@
                     {
                       "condition": "[not(equals(parameters('name'), 'pid'))]",
                       "type": "Microsoft.Resources/deployments",
-                      "apiVersion": "2020-06-01",
+                      "apiVersion": "2019-10-01",
                       "name": "[parameters('name')]",
                       "properties": {
                         "expressionEvaluationOptions": {
@@ -3750,8 +3750,8 @@
                           "metadata": {
                             "_generator": {
                               "name": "bicep",
-                              "version": "0.4.1008.15138",
-                              "templateHash": "14669053462841078328"
+                              "version": "0.4.451.19169",
+                              "templateHash": "4589167010597738390"
                             }
                           },
                           "functions": [],
@@ -3808,7 +3808,7 @@
             {
               "condition": "[parameters('createAKSCluster')]",
               "type": "Microsoft.Resources/deployments",
-              "apiVersion": "2020-06-01",
+              "apiVersion": "2019-10-01",
               "name": "aks-cluster-deployment",
               "properties": {
                 "expressionEvaluationOptions": {
@@ -3853,8 +3853,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.4.1008.15138",
-                      "templateHash": "1662521445991274672"
+                      "version": "0.4.451.19169",
+                      "templateHash": "5611877322241045749"
                     }
                   },
                   "parameters": {
@@ -4028,7 +4028,7 @@
                       "name": "[variables('name_aksClusterNameForSV')]",
                       "location": "[parameters('location')]",
                       "properties": {
-                        "kubernetesVersion": "[format('{0}', parameters('aksVersion'))]",
+                        "kubernetesVersion": "[parameters('aksVersion')]",
                         "dnsPrefix": "[format('{0}-dns', variables('name_aksClusterNameForSV'))]",
                         "agentPoolProfiles": [
                           {
@@ -4057,7 +4057,7 @@
                             "enabled": false
                           },
                           "omsAgent": {
-                            "enabled": "[bool(format('{0}', parameters('enableAzureMonitoring')))]"
+                            "enabled": "[bool(parameters('enableAzureMonitoring'))]"
                           }
                         },
                         "enableRBAC": true,
@@ -4074,7 +4074,7 @@
                   "outputs": {
                     "aksClusterName": {
                       "type": "string",
-                      "value": "[if(equals(format('{0}', parameters('aksVersion')), 'default'), variables('name_aksClusterNameDefault'), variables('name_aksClusterNameForSV'))]"
+                      "value": "[if(equals(parameters('aksVersion'), 'default'), variables('name_aksClusterNameDefault'), variables('name_aksClusterNameForSV'))]"
                     }
                   }
                 }
@@ -4086,7 +4086,7 @@
             {
               "condition": "[and(parameters('useOracleImage'), parameters('createACR'))]",
               "type": "Microsoft.Resources/deployments",
-              "apiVersion": "2020-06-01",
+              "apiVersion": "2019-10-01",
               "name": "acr-deployment",
               "properties": {
                 "expressionEvaluationOptions": {
@@ -4104,8 +4104,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.4.1008.15138",
-                      "templateHash": "16999541500289008629"
+                      "version": "0.4.451.19169",
+                      "templateHash": "11369643611717351639"
                     }
                   },
                   "parameters": {
@@ -4177,7 +4177,7 @@
             {
               "condition": "[parameters('createStorageAccount')]",
               "type": "Microsoft.Resources/deployments",
-              "apiVersion": "2020-06-01",
+              "apiVersion": "2019-10-01",
               "name": "storage-deployment",
               "properties": {
                 "expressionEvaluationOptions": {
@@ -4198,8 +4198,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.4.1008.15138",
-                      "templateHash": "9546408933814304658"
+                      "version": "0.4.451.19169",
+                      "templateHash": "10691680331846265643"
                     }
                   },
                   "parameters": {
@@ -4277,7 +4277,7 @@
             },
             {
               "type": "Microsoft.Resources/deployments",
-              "apiVersion": "2020-06-01",
+              "apiVersion": "2019-10-01",
               "name": "wls-domain-deployment",
               "properties": {
                 "expressionEvaluationOptions": {
@@ -4295,10 +4295,10 @@
                     "value": "[if(parameters('createAKSCluster'), resourceGroup().name, parameters('aksClusterRGName'))]"
                   },
                   "aksClusterName": {
-                    "value": "[if(parameters('createAKSCluster'), reference(resourceId('Microsoft.Resources/deployments', 'aks-cluster-deployment'), '2020-06-01').outputs.aksClusterName.value, parameters('aksClusterName'))]"
+                    "value": "[if(parameters('createAKSCluster'), reference(resourceId('Microsoft.Resources/deployments', 'aks-cluster-deployment'), '2019-10-01').outputs.aksClusterName.value, parameters('aksClusterName'))]"
                   },
                   "acrName": {
-                    "value": "[if(parameters('useOracleImage'), if(parameters('createACR'), reference(resourceId('Microsoft.Resources/deployments', 'acr-deployment'), '2020-06-01').outputs.acrName.value, parameters('acrName')), parameters('userProvidedAcr'))]"
+                    "value": "[if(parameters('useOracleImage'), if(parameters('createACR'), reference(resourceId('Microsoft.Resources/deployments', 'acr-deployment'), '2019-10-01').outputs.acrName.value, parameters('acrName')), parameters('userProvidedAcr'))]"
                   },
                   "appPackageUrls": {
                     "value": "[parameters('appPackageUrls')]"
@@ -4409,8 +4409,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.4.1008.15138",
-                      "templateHash": "8791274137507390004"
+                      "version": "0.4.451.19169",
+                      "templateHash": "3151468794570433678"
                     }
                   },
                   "parameters": {
@@ -4629,7 +4629,7 @@
             },
             {
               "type": "Microsoft.Resources/deployments",
-              "apiVersion": "2020-06-01",
+              "apiVersion": "2019-10-01",
               "name": "wls-aks-end-pid-deployment",
               "properties": {
                 "expressionEvaluationOptions": {
@@ -4647,8 +4647,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.4.1008.15138",
-                      "templateHash": "8805472380936134177"
+                      "version": "0.4.451.19169",
+                      "templateHash": "271164630090628396"
                     }
                   },
                   "parameters": {
@@ -4662,7 +4662,7 @@
                     {
                       "condition": "[not(equals(parameters('name'), 'pid'))]",
                       "type": "Microsoft.Resources/deployments",
-                      "apiVersion": "2020-06-01",
+                      "apiVersion": "2019-10-01",
                       "name": "[parameters('name')]",
                       "properties": {
                         "expressionEvaluationOptions": {
@@ -4675,8 +4675,8 @@
                           "metadata": {
                             "_generator": {
                               "name": "bicep",
-                              "version": "0.4.1008.15138",
-                              "templateHash": "14669053462841078328"
+                              "version": "0.4.451.19169",
+                              "templateHash": "4589167010597738390"
                             }
                           },
                           "functions": [],
@@ -4737,7 +4737,7 @@
           "outputs": {
             "aksClusterName": {
               "type": "string",
-              "value": "[if(parameters('createAKSCluster'), reference(resourceId('Microsoft.Resources/deployments', 'aks-cluster-deployment'), '2020-06-01').outputs.aksClusterName.value, parameters('aksClusterName'))]"
+              "value": "[if(parameters('createAKSCluster'), reference(resourceId('Microsoft.Resources/deployments', 'aks-cluster-deployment'), '2019-10-01').outputs.aksClusterName.value, parameters('aksClusterName'))]"
             },
             "aksClusterRGName": {
               "type": "string",
@@ -4771,7 +4771,7 @@
     {
       "condition": "[and(parameters('enableAppGWIngress'), not(equals(parameters('appGatewayCertificateOption'), variables('const_appGatewaySSLCertOptionHaveKeyVault'))))]",
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2020-06-01",
+      "apiVersion": "2019-10-01",
       "name": "appgateway-certificates-secrets-deployment",
       "properties": {
         "expressionEvaluationOptions": {
@@ -4813,8 +4813,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.1008.15138",
-              "templateHash": "7537298927039734706"
+              "version": "0.4.451.19169",
+              "templateHash": "4707955039711369809"
             }
           },
           "parameters": {
@@ -4902,7 +4902,7 @@
             {
               "condition": "[not(parameters('useExistingAppGatewaySSLCertificate'))]",
               "type": "Microsoft.Resources/deployments",
-              "apiVersion": "2020-06-01",
+              "apiVersion": "2019-10-01",
               "name": "kv-appgw-selfsigned-certificate-deployment",
               "properties": {
                 "expressionEvaluationOptions": {
@@ -4932,8 +4932,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.4.1008.15138",
-                      "templateHash": "93542961207007694"
+                      "version": "0.4.451.19169",
+                      "templateHash": "6620357209618152215"
                     }
                   },
                   "parameters": {
@@ -4991,7 +4991,7 @@
                   },
                   "functions": [],
                   "variables": {
-                    "const_identityId": "[format('{0}', substring(string(parameters('identity').userAssignedIdentities), add(indexOf(string(parameters('identity').userAssignedIdentities), '\"'), 1), sub(lastIndexOf(string(parameters('identity').userAssignedIdentities), '\"'), add(indexOf(string(parameters('identity').userAssignedIdentities), '\"'), 1))))]"
+                    "const_identityId": "[substring(string(parameters('identity').userAssignedIdentities), add(indexOf(string(parameters('identity').userAssignedIdentities), '\"'), 1), sub(lastIndexOf(string(parameters('identity').userAssignedIdentities), '\"'), add(indexOf(string(parameters('identity').userAssignedIdentities), '\"'), 1)))]"
                   },
                   "resources": [
                     {
@@ -5062,7 +5062,7 @@
             {
               "condition": "[parameters('useExistingAppGatewaySSLCertificate')]",
               "type": "Microsoft.Resources/deployments",
-              "apiVersion": "2020-06-01",
+              "apiVersion": "2019-10-01",
               "name": "kv-appgw-existing-certificate-deployment",
               "properties": {
                 "expressionEvaluationOptions": {
@@ -5098,8 +5098,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.4.1008.15138",
-                      "templateHash": "13398260045661163430"
+                      "version": "0.4.451.19169",
+                      "templateHash": "13416237138489418762"
                     }
                   },
                   "parameters": {
@@ -5214,7 +5214,7 @@
             {
               "condition": "[parameters('enableCustomSSL')]",
               "type": "Microsoft.Resources/deployments",
-              "apiVersion": "2020-06-01",
+              "apiVersion": "2019-10-01",
               "name": "kv-appgw-e2e-ssl-backend-certificate",
               "properties": {
                 "expressionEvaluationOptions": {
@@ -5244,8 +5244,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.4.1008.15138",
-                      "templateHash": "17592102276074009715"
+                      "version": "0.4.451.19169",
+                      "templateHash": "5644028675330849743"
                     }
                   },
                   "parameters": {
@@ -5338,19 +5338,19 @@
           "outputs": {
             "keyVaultName": {
               "type": "string",
-              "value": "[if(parameters('useExistingAppGatewaySSLCertificate'), reference(resourceId('Microsoft.Resources/deployments', 'kv-appgw-existing-certificate-deployment'), '2020-06-01').outputs.keyVaultName.value, reference(resourceId('Microsoft.Resources/deployments', 'kv-appgw-selfsigned-certificate-deployment'), '2020-06-01').outputs.keyVaultName.value)]"
+              "value": "[if(parameters('useExistingAppGatewaySSLCertificate'), reference(resourceId('Microsoft.Resources/deployments', 'kv-appgw-existing-certificate-deployment'), '2019-10-01').outputs.keyVaultName.value, reference(resourceId('Microsoft.Resources/deployments', 'kv-appgw-selfsigned-certificate-deployment'), '2019-10-01').outputs.keyVaultName.value)]"
             },
             "sslCertDataSecretName": {
               "type": "string",
-              "value": "[if(parameters('useExistingAppGatewaySSLCertificate'), reference(resourceId('Microsoft.Resources/deployments', 'kv-appgw-existing-certificate-deployment'), '2020-06-01').outputs.sslCertDataSecretName.value, reference(resourceId('Microsoft.Resources/deployments', 'kv-appgw-selfsigned-certificate-deployment'), '2020-06-01').outputs.secretName.value)]"
+              "value": "[if(parameters('useExistingAppGatewaySSLCertificate'), reference(resourceId('Microsoft.Resources/deployments', 'kv-appgw-existing-certificate-deployment'), '2019-10-01').outputs.sslCertDataSecretName.value, reference(resourceId('Microsoft.Resources/deployments', 'kv-appgw-selfsigned-certificate-deployment'), '2019-10-01').outputs.secretName.value)]"
             },
             "sslCertPwdSecretName": {
               "type": "string",
-              "value": "[if(parameters('useExistingAppGatewaySSLCertificate'), reference(resourceId('Microsoft.Resources/deployments', 'kv-appgw-existing-certificate-deployment'), '2020-06-01').outputs.sslCertPwdSecretName.value, '')]"
+              "value": "[if(parameters('useExistingAppGatewaySSLCertificate'), reference(resourceId('Microsoft.Resources/deployments', 'kv-appgw-existing-certificate-deployment'), '2019-10-01').outputs.sslCertPwdSecretName.value, '')]"
             },
             "sslBackendCertDataSecretName": {
               "type": "string",
-              "value": "[if(parameters('enableCustomSSL'), reference(resourceId('Microsoft.Resources/deployments', 'kv-appgw-e2e-ssl-backend-certificate'), '2020-06-01').outputs.sslBackendCertDataSecretName.value, '')]"
+              "value": "[if(parameters('enableCustomSSL'), reference(resourceId('Microsoft.Resources/deployments', 'kv-appgw-e2e-ssl-backend-certificate'), '2019-10-01').outputs.sslBackendCertDataSecretName.value, '')]"
             }
           }
         }
@@ -5363,7 +5363,7 @@
     {
       "condition": "[variables('const_enableNetworking')]",
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2020-06-01",
+      "apiVersion": "2019-10-01",
       "name": "networking-deployment",
       "properties": {
         "expressionEvaluationOptions": {
@@ -5378,22 +5378,22 @@
             "value": "[parameters('_artifactsLocationSasToken')]"
           },
           "_pidNetworkingEnd": {
-            "value": "[if(equals(reference(resourceId('Microsoft.Resources/deployments', 'initialization'), '2020-06-01').outputs.networkingEnd.value, ''), variables('name_defaultPidDeployment'), reference(resourceId('Microsoft.Resources/deployments', 'initialization'), '2020-06-01').outputs.networkingEnd.value)]"
+            "value": "[if(equals(reference(resourceId('Microsoft.Resources/deployments', 'initialization'), '2019-10-01').outputs.networkingEnd.value, ''), variables('name_defaultPidDeployment'), reference(resourceId('Microsoft.Resources/deployments', 'initialization'), '2019-10-01').outputs.networkingEnd.value)]"
           },
           "_pidNetworkingStart": {
-            "value": "[if(equals(reference(resourceId('Microsoft.Resources/deployments', 'initialization'), '2020-06-01').outputs.networkingStart.value, ''), variables('name_defaultPidDeployment'), reference(resourceId('Microsoft.Resources/deployments', 'initialization'), '2020-06-01').outputs.networkingStart.value)]"
+            "value": "[if(equals(reference(resourceId('Microsoft.Resources/deployments', 'initialization'), '2019-10-01').outputs.networkingStart.value, ''), variables('name_defaultPidDeployment'), reference(resourceId('Microsoft.Resources/deployments', 'initialization'), '2019-10-01').outputs.networkingStart.value)]"
           },
           "_pidAppgwEnd": {
-            "value": "[if(equals(reference(resourceId('Microsoft.Resources/deployments', 'initialization'), '2020-06-01').outputs.appgwEnd.value, ''), variables('name_defaultPidDeployment'), reference(resourceId('Microsoft.Resources/deployments', 'initialization'), '2020-06-01').outputs.appgwEnd.value)]"
+            "value": "[if(equals(reference(resourceId('Microsoft.Resources/deployments', 'initialization'), '2019-10-01').outputs.appgwEnd.value, ''), variables('name_defaultPidDeployment'), reference(resourceId('Microsoft.Resources/deployments', 'initialization'), '2019-10-01').outputs.appgwEnd.value)]"
           },
           "_pidAppgwStart": {
-            "value": "[if(equals(reference(resourceId('Microsoft.Resources/deployments', 'initialization'), '2020-06-01').outputs.appgwStart.value, ''), variables('name_defaultPidDeployment'), reference(resourceId('Microsoft.Resources/deployments', 'initialization'), '2020-06-01').outputs.appgwStart.value)]"
+            "value": "[if(equals(reference(resourceId('Microsoft.Resources/deployments', 'initialization'), '2019-10-01').outputs.appgwStart.value, ''), variables('name_defaultPidDeployment'), reference(resourceId('Microsoft.Resources/deployments', 'initialization'), '2019-10-01').outputs.appgwStart.value)]"
           },
           "aksClusterRGName": {
-            "value": "[reference(resourceId('Microsoft.Resources/deployments', if(parameters('enableCustomSSL'), 'setup-wls-cluster-with-custom-ssl-enabled', 'setup-wls-cluster'))).aksClusterRGName.value.value]"
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', if(parameters('enableCustomSSL'), 'setup-wls-cluster-with-custom-ssl-enabled', 'setup-wls-cluster'))).outputs.aksClusterRGName.value]"
           },
           "aksClusterName": {
-            "value": "[reference(resourceId('Microsoft.Resources/deployments', if(parameters('enableCustomSSL'), 'setup-wls-cluster-with-custom-ssl-enabled', 'setup-wls-cluster'))).aksClusterName.value.value]"
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', if(parameters('enableCustomSSL'), 'setup-wls-cluster-with-custom-ssl-enabled', 'setup-wls-cluster'))).outputs.aksClusterName.value]"
           },
           "appGatewayCertificateOption": {
             "value": "[parameters('appGatewayCertificateOption')]"
@@ -5447,19 +5447,19 @@
             "value": "[parameters('identity')]"
           },
           "keyVaultName": {
-            "value": "[if(or(not(parameters('enableAppGWIngress')), equals(parameters('appGatewayCertificateOption'), variables('const_appGatewaySSLCertOptionHaveKeyVault'))), parameters('keyVaultName'), reference(resourceId('Microsoft.Resources/deployments', 'appgateway-certificates-secrets-deployment'), '2020-06-01').outputs.keyVaultName.value)]"
+            "value": "[if(or(not(parameters('enableAppGWIngress')), equals(parameters('appGatewayCertificateOption'), variables('const_appGatewaySSLCertOptionHaveKeyVault'))), parameters('keyVaultName'), reference(resourceId('Microsoft.Resources/deployments', 'appgateway-certificates-secrets-deployment'), '2019-10-01').outputs.keyVaultName.value)]"
           },
           "keyVaultResourceGroup": {
             "value": "[if(or(not(parameters('enableAppGWIngress')), equals(parameters('appGatewayCertificateOption'), variables('const_appGatewaySSLCertOptionHaveKeyVault'))), parameters('keyVaultResourceGroup'), resourceGroup().name)]"
           },
           "keyvaultBackendCertDataSecretName": {
-            "value": "[if(or(not(parameters('enableAppGWIngress')), equals(parameters('appGatewayCertificateOption'), variables('const_appGatewaySSLCertOptionHaveKeyVault'))), parameters('keyVaultSSLBackendRootCertDataSecretName'), reference(resourceId('Microsoft.Resources/deployments', 'appgateway-certificates-secrets-deployment'), '2020-06-01').outputs.sslBackendCertDataSecretName.value)]"
+            "value": "[if(or(not(parameters('enableAppGWIngress')), equals(parameters('appGatewayCertificateOption'), variables('const_appGatewaySSLCertOptionHaveKeyVault'))), parameters('keyVaultSSLBackendRootCertDataSecretName'), reference(resourceId('Microsoft.Resources/deployments', 'appgateway-certificates-secrets-deployment'), '2019-10-01').outputs.sslBackendCertDataSecretName.value)]"
           },
           "keyVaultSSLCertDataSecretName": {
-            "value": "[if(or(not(parameters('enableAppGWIngress')), equals(parameters('appGatewayCertificateOption'), variables('const_appGatewaySSLCertOptionHaveKeyVault'))), parameters('keyVaultSSLCertDataSecretName'), reference(resourceId('Microsoft.Resources/deployments', 'appgateway-certificates-secrets-deployment'), '2020-06-01').outputs.sslCertDataSecretName.value)]"
+            "value": "[if(or(not(parameters('enableAppGWIngress')), equals(parameters('appGatewayCertificateOption'), variables('const_appGatewaySSLCertOptionHaveKeyVault'))), parameters('keyVaultSSLCertDataSecretName'), reference(resourceId('Microsoft.Resources/deployments', 'appgateway-certificates-secrets-deployment'), '2019-10-01').outputs.sslCertDataSecretName.value)]"
           },
           "keyVaultSSLCertPasswordSecretName": {
-            "value": "[if(or(not(parameters('enableAppGWIngress')), equals(parameters('appGatewayCertificateOption'), variables('const_appGatewaySSLCertOptionHaveKeyVault'))), parameters('keyVaultSSLCertPasswordSecretName'), reference(resourceId('Microsoft.Resources/deployments', 'appgateway-certificates-secrets-deployment'), '2020-06-01').outputs.sslCertPwdSecretName.value)]"
+            "value": "[if(or(not(parameters('enableAppGWIngress')), equals(parameters('appGatewayCertificateOption'), variables('const_appGatewaySSLCertOptionHaveKeyVault'))), parameters('keyVaultSSLCertPasswordSecretName'), reference(resourceId('Microsoft.Resources/deployments', 'appgateway-certificates-secrets-deployment'), '2019-10-01').outputs.sslCertPwdSecretName.value)]"
           },
           "location": {
             "value": "[parameters('location')]"
@@ -5486,8 +5486,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.1008.15138",
-              "templateHash": "6708776956952610283"
+              "version": "0.4.451.19169",
+              "templateHash": "11869259464553927216"
             }
           },
           "parameters": {
@@ -5703,7 +5703,7 @@
           "resources": [
             {
               "type": "Microsoft.Resources/deployments",
-              "apiVersion": "2020-06-01",
+              "apiVersion": "2019-10-01",
               "name": "pid-networking-start-deployment",
               "properties": {
                 "expressionEvaluationOptions": {
@@ -5721,8 +5721,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.4.1008.15138",
-                      "templateHash": "8805472380936134177"
+                      "version": "0.4.451.19169",
+                      "templateHash": "271164630090628396"
                     }
                   },
                   "parameters": {
@@ -5736,7 +5736,7 @@
                     {
                       "condition": "[not(equals(parameters('name'), 'pid'))]",
                       "type": "Microsoft.Resources/deployments",
-                      "apiVersion": "2020-06-01",
+                      "apiVersion": "2019-10-01",
                       "name": "[parameters('name')]",
                       "properties": {
                         "expressionEvaluationOptions": {
@@ -5749,8 +5749,8 @@
                           "metadata": {
                             "_generator": {
                               "name": "bicep",
-                              "version": "0.4.1008.15138",
-                              "templateHash": "14669053462841078328"
+                              "version": "0.4.451.19169",
+                              "templateHash": "4589167010597738390"
                             }
                           },
                           "functions": [],
@@ -5807,7 +5807,7 @@
             {
               "condition": "[parameters('enableAppGWIngress')]",
               "type": "Microsoft.Resources/deployments",
-              "apiVersion": "2020-06-01",
+              "apiVersion": "2019-10-01",
               "name": "pid-app-gateway-start-deployment",
               "properties": {
                 "expressionEvaluationOptions": {
@@ -5825,8 +5825,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.4.1008.15138",
-                      "templateHash": "8805472380936134177"
+                      "version": "0.4.451.19169",
+                      "templateHash": "271164630090628396"
                     }
                   },
                   "parameters": {
@@ -5840,7 +5840,7 @@
                     {
                       "condition": "[not(equals(parameters('name'), 'pid'))]",
                       "type": "Microsoft.Resources/deployments",
-                      "apiVersion": "2020-06-01",
+                      "apiVersion": "2019-10-01",
                       "name": "[parameters('name')]",
                       "properties": {
                         "expressionEvaluationOptions": {
@@ -5853,8 +5853,8 @@
                           "metadata": {
                             "_generator": {
                               "name": "bicep",
-                              "version": "0.4.1008.15138",
-                              "templateHash": "14669053462841078328"
+                              "version": "0.4.451.19169",
+                              "templateHash": "4589167010597738390"
                             }
                           },
                           "functions": [],
@@ -5911,7 +5911,7 @@
             {
               "condition": "[parameters('enableAppGWIngress')]",
               "type": "Microsoft.Resources/deployments",
-              "apiVersion": "2020-06-01",
+              "apiVersion": "2019-10-01",
               "name": "app-gateway-deployment",
               "properties": {
                 "expressionEvaluationOptions": {
@@ -5932,8 +5932,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.4.1008.15138",
-                      "templateHash": "1601118008670448058"
+                      "version": "0.4.451.19169",
+                      "templateHash": "2178332416925567271"
                     }
                   },
                   "parameters": {
@@ -6192,7 +6192,7 @@
             {
               "condition": "[and(parameters('enableAppGWIngress'), parameters('enableCustomSSL'))]",
               "type": "Microsoft.Resources/deployments",
-              "apiVersion": "2020-06-01",
+              "apiVersion": "2019-10-01",
               "name": "app-gateway-backend-cert-deployment",
               "properties": {
                 "expressionEvaluationOptions": {
@@ -6201,7 +6201,7 @@
                 "mode": "Incremental",
                 "parameters": {
                   "appgwName": {
-                    "value": "[if(parameters('enableAppGWIngress'), reference(resourceId('Microsoft.Resources/deployments', 'app-gateway-deployment'), '2020-06-01').outputs.appGatewayName.value, 'null')]"
+                    "value": "[if(parameters('enableAppGWIngress'), reference(resourceId('Microsoft.Resources/deployments', 'app-gateway-deployment'), '2019-10-01').outputs.appGatewayName.value, 'null')]"
                   },
                   "sslBackendRootCertData": {
                     "reference": {
@@ -6221,8 +6221,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.4.1008.15138",
-                      "templateHash": "8644091891956092471"
+                      "version": "0.4.451.19169",
+                      "templateHash": "9022372744947535513"
                     }
                   },
                   "parameters": {
@@ -6274,7 +6274,7 @@
             {
               "condition": "[and(parameters('enableDNSConfiguration'), parameters('createDNSZone'))]",
               "type": "Microsoft.Resources/deployments",
-              "apiVersion": "2020-06-01",
+              "apiVersion": "2019-10-01",
               "name": "dnszone-deployment",
               "properties": {
                 "expressionEvaluationOptions": {
@@ -6292,8 +6292,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.4.1008.15138",
-                      "templateHash": "6353609648537853708"
+                      "version": "0.4.451.19169",
+                      "templateHash": "6096463756909181949"
                     }
                   },
                   "parameters": {
@@ -6325,7 +6325,7 @@
             {
               "condition": "[and(parameters('enableAppGWIngress'), not(equals(parameters('appGatewayCertificateOption'), variables('const_appgwSSLCertOptionGenerateCert'))))]",
               "type": "Microsoft.Resources/deployments",
-              "apiVersion": "2020-06-01",
+              "apiVersion": "2019-10-01",
               "name": "ds-networking-deployment",
               "properties": {
                 "expressionEvaluationOptions": {
@@ -6340,10 +6340,10 @@
                     "value": "[parameters('_artifactsLocationSasToken')]"
                   },
                   "appgwName": {
-                    "value": "[if(parameters('enableAppGWIngress'), reference(resourceId('Microsoft.Resources/deployments', 'app-gateway-deployment'), '2020-06-01').outputs.appGatewayName.value, 'null')]"
+                    "value": "[if(parameters('enableAppGWIngress'), reference(resourceId('Microsoft.Resources/deployments', 'app-gateway-deployment'), '2019-10-01').outputs.appGatewayName.value, 'null')]"
                   },
                   "appgwAlias": {
-                    "value": "[if(parameters('enableAppGWIngress'), reference(resourceId('Microsoft.Resources/deployments', 'app-gateway-deployment'), '2020-06-01').outputs.appGatewayAlias.value, 'null')]"
+                    "value": "[if(parameters('enableAppGWIngress'), reference(resourceId('Microsoft.Resources/deployments', 'app-gateway-deployment'), '2019-10-01').outputs.appGatewayAlias.value, 'null')]"
                   },
                   "appgwCertificateOption": {
                     "value": "[parameters('appGatewayCertificateOption')]"
@@ -6422,7 +6422,7 @@
                     "value": "[parameters('useInternalLB')]"
                   },
                   "vnetName": {
-                    "value": "[if(parameters('enableAppGWIngress'), reference(resourceId('Microsoft.Resources/deployments', 'app-gateway-deployment'), '2020-06-01').outputs.vnetName.value, 'null')]"
+                    "value": "[if(parameters('enableAppGWIngress'), reference(resourceId('Microsoft.Resources/deployments', 'app-gateway-deployment'), '2019-10-01').outputs.vnetName.value, 'null')]"
                   },
                   "wlsDomainName": {
                     "value": "[parameters('wlsDomainName')]"
@@ -6437,8 +6437,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.4.1008.15138",
-                      "templateHash": "8305864557080278788"
+                      "version": "0.4.451.19169",
+                      "templateHash": "1328779873470137627"
                     }
                   },
                   "parameters": {
@@ -6657,7 +6657,7 @@
             {
               "condition": "[and(parameters('enableAppGWIngress'), equals(parameters('appGatewayCertificateOption'), variables('const_appgwSSLCertOptionGenerateCert')))]",
               "type": "Microsoft.Resources/deployments",
-              "apiVersion": "2020-06-01",
+              "apiVersion": "2019-10-01",
               "name": "ds-networking-deployment-1",
               "properties": {
                 "expressionEvaluationOptions": {
@@ -6672,10 +6672,10 @@
                     "value": "[parameters('_artifactsLocationSasToken')]"
                   },
                   "appgwName": {
-                    "value": "[if(parameters('enableAppGWIngress'), reference(resourceId('Microsoft.Resources/deployments', 'app-gateway-deployment'), '2020-06-01').outputs.appGatewayName.value, 'null')]"
+                    "value": "[if(parameters('enableAppGWIngress'), reference(resourceId('Microsoft.Resources/deployments', 'app-gateway-deployment'), '2019-10-01').outputs.appGatewayName.value, 'null')]"
                   },
                   "appgwAlias": {
-                    "value": "[if(parameters('enableAppGWIngress'), reference(resourceId('Microsoft.Resources/deployments', 'app-gateway-deployment'), '2020-06-01').outputs.appGatewayAlias.value, 'null')]"
+                    "value": "[if(parameters('enableAppGWIngress'), reference(resourceId('Microsoft.Resources/deployments', 'app-gateway-deployment'), '2019-10-01').outputs.appGatewayAlias.value, 'null')]"
                   },
                   "appgwCertificateOption": {
                     "value": "[parameters('appGatewayCertificateOption')]"
@@ -6749,7 +6749,7 @@
                     "value": "[parameters('useInternalLB')]"
                   },
                   "vnetName": {
-                    "value": "[if(parameters('enableAppGWIngress'), reference(resourceId('Microsoft.Resources/deployments', 'app-gateway-deployment'), '2020-06-01').outputs.vnetName.value, 'null')]"
+                    "value": "[if(parameters('enableAppGWIngress'), reference(resourceId('Microsoft.Resources/deployments', 'app-gateway-deployment'), '2019-10-01').outputs.vnetName.value, 'null')]"
                   },
                   "wlsDomainName": {
                     "value": "[parameters('wlsDomainName')]"
@@ -6764,8 +6764,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.4.1008.15138",
-                      "templateHash": "8305864557080278788"
+                      "version": "0.4.451.19169",
+                      "templateHash": "1328779873470137627"
                     }
                   },
                   "parameters": {
@@ -6984,7 +6984,7 @@
             {
               "condition": "[not(parameters('enableAppGWIngress'))]",
               "type": "Microsoft.Resources/deployments",
-              "apiVersion": "2020-06-01",
+              "apiVersion": "2019-10-01",
               "name": "ds-networking-deployment-2",
               "properties": {
                 "expressionEvaluationOptions": {
@@ -7086,8 +7086,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.4.1008.15138",
-                      "templateHash": "8305864557080278788"
+                      "version": "0.4.451.19169",
+                      "templateHash": "1328779873470137627"
                     }
                   },
                   "parameters": {
@@ -7304,7 +7304,7 @@
             {
               "condition": "[parameters('enableAppGWIngress')]",
               "type": "Microsoft.Resources/deployments",
-              "apiVersion": "2020-06-01",
+              "apiVersion": "2019-10-01",
               "name": "pid-app-gateway-end-deployment",
               "properties": {
                 "expressionEvaluationOptions": {
@@ -7322,8 +7322,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.4.1008.15138",
-                      "templateHash": "8805472380936134177"
+                      "version": "0.4.451.19169",
+                      "templateHash": "271164630090628396"
                     }
                   },
                   "parameters": {
@@ -7337,7 +7337,7 @@
                     {
                       "condition": "[not(equals(parameters('name'), 'pid'))]",
                       "type": "Microsoft.Resources/deployments",
-                      "apiVersion": "2020-06-01",
+                      "apiVersion": "2019-10-01",
                       "name": "[parameters('name')]",
                       "properties": {
                         "expressionEvaluationOptions": {
@@ -7350,8 +7350,8 @@
                           "metadata": {
                             "_generator": {
                               "name": "bicep",
-                              "version": "0.4.1008.15138",
-                              "templateHash": "14669053462841078328"
+                              "version": "0.4.451.19169",
+                              "templateHash": "4589167010597738390"
                             }
                           },
                           "functions": [],
@@ -7410,7 +7410,7 @@
             },
             {
               "type": "Microsoft.Resources/deployments",
-              "apiVersion": "2020-06-01",
+              "apiVersion": "2019-10-01",
               "name": "pid-networking-end-deployment",
               "properties": {
                 "expressionEvaluationOptions": {
@@ -7428,8 +7428,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.4.1008.15138",
-                      "templateHash": "8805472380936134177"
+                      "version": "0.4.451.19169",
+                      "templateHash": "271164630090628396"
                     }
                   },
                   "parameters": {
@@ -7443,7 +7443,7 @@
                     {
                       "condition": "[not(equals(parameters('name'), 'pid'))]",
                       "type": "Microsoft.Resources/deployments",
-                      "apiVersion": "2020-06-01",
+                      "apiVersion": "2019-10-01",
                       "name": "[parameters('name')]",
                       "properties": {
                         "expressionEvaluationOptions": {
@@ -7456,8 +7456,8 @@
                           "metadata": {
                             "_generator": {
                               "name": "bicep",
-                              "version": "0.4.1008.15138",
-                              "templateHash": "14669053462841078328"
+                              "version": "0.4.451.19169",
+                              "templateHash": "4589167010597738390"
                             }
                           },
                           "functions": [],
@@ -7520,35 +7520,35 @@
           "outputs": {
             "adminConsoleExternalUrl": {
               "type": "string",
-              "value": "[if(parameters('enableAppGWIngress'), if(parameters('enableDNSConfiguration'), format('http://{0}console', variables('const_appgwAdminCustomDNSAlias')), format('http://{0}/console', reference(resourceId('Microsoft.Resources/deployments', 'app-gateway-deployment'), '2020-06-01').outputs.appGatewayAlias.value)), reference(variables('name_networkDeployment')).adminConsoleLBUrl.value.value)]"
+              "value": "[if(parameters('enableAppGWIngress'), if(parameters('enableDNSConfiguration'), format('http://{0}console', variables('const_appgwAdminCustomDNSAlias')), format('http://{0}/console', reference(resourceId('Microsoft.Resources/deployments', 'app-gateway-deployment'), '2019-10-01').outputs.appGatewayAlias.value)), reference(variables('name_networkDeployment')).outputs.adminConsoleLBUrl.value)]"
             },
             "adminConsoleExternalSecuredUrl": {
               "type": "string",
-              "value": "[if(and(and(parameters('enableAppGWIngress'), parameters('enableCustomSSL')), parameters('enableDNSConfiguration')), format('https://{0}console', variables('const_appgwAdminCustomDNSAlias')), reference(variables('name_networkDeployment')).adminConsoleLBSecuredUrl.value.value)]"
+              "value": "[if(and(and(parameters('enableAppGWIngress'), parameters('enableCustomSSL')), parameters('enableDNSConfiguration')), format('https://{0}console', variables('const_appgwAdminCustomDNSAlias')), reference(variables('name_networkDeployment')).outputs.adminConsoleLBSecuredUrl.value)]"
             },
             "adminRemoteConsoleUrl": {
               "type": "string",
-              "value": "[if(parameters('enableAppGWIngress'), if(parameters('enableDNSConfiguration'), format('http://{0}remoteconsole', variables('const_appgwAdminCustomDNSAlias')), format('http://{0}/remoteconsole', reference(resourceId('Microsoft.Resources/deployments', 'app-gateway-deployment'), '2020-06-01').outputs.appGatewayAlias.value)), reference(variables('name_networkDeployment')).adminRemoteUrl.value.value)]"
+              "value": "[if(parameters('enableAppGWIngress'), if(parameters('enableDNSConfiguration'), format('http://{0}remoteconsole', variables('const_appgwAdminCustomDNSAlias')), format('http://{0}/remoteconsole', reference(resourceId('Microsoft.Resources/deployments', 'app-gateway-deployment'), '2019-10-01').outputs.appGatewayAlias.value)), reference(variables('name_networkDeployment')).outputs.adminRemoteUrl.value)]"
             },
             "adminRemoteConsoleSecuredUrl": {
               "type": "string",
-              "value": "[if(and(and(parameters('enableAppGWIngress'), parameters('enableCustomSSL')), parameters('enableDNSConfiguration')), format('https://{0}remoteconsole', variables('const_appgwAdminCustomDNSAlias')), reference(variables('name_networkDeployment')).adminRemoteSecuredUrl.value.value)]"
+              "value": "[if(and(and(parameters('enableAppGWIngress'), parameters('enableCustomSSL')), parameters('enableDNSConfiguration')), format('https://{0}remoteconsole', variables('const_appgwAdminCustomDNSAlias')), reference(variables('name_networkDeployment')).outputs.adminRemoteSecuredUrl.value)]"
             },
             "adminServerT3ChannelUrl": {
               "type": "string",
-              "value": "[reference(variables('name_networkDeployment')).adminServerT3LBUrl.value.value]"
+              "value": "[reference(variables('name_networkDeployment')).outputs.adminServerT3LBUrl.value]"
             },
             "clusterExternalUrl": {
               "type": "string",
-              "value": "[if(parameters('enableAppGWIngress'), if(parameters('enableDNSConfiguration'), format('http://{0}', variables('const_appgwCustomDNSAlias')), reference(resourceId('Microsoft.Resources/deployments', 'app-gateway-deployment'), '2020-06-01').outputs.appGatewayURL.value), reference(variables('name_networkDeployment')).clusterLBUrl.value.value)]"
+              "value": "[if(parameters('enableAppGWIngress'), if(parameters('enableDNSConfiguration'), format('http://{0}', variables('const_appgwCustomDNSAlias')), reference(resourceId('Microsoft.Resources/deployments', 'app-gateway-deployment'), '2019-10-01').outputs.appGatewayURL.value), reference(variables('name_networkDeployment')).outputs.clusterLBUrl.value)]"
             },
             "clusterExternalSecuredUrl": {
               "type": "string",
-              "value": "[if(parameters('enableAppGWIngress'), if(parameters('enableDNSConfiguration'), format('https://{0}', variables('const_appgwCustomDNSAlias')), reference(resourceId('Microsoft.Resources/deployments', 'app-gateway-deployment'), '2020-06-01').outputs.appGatewaySecuredURL.value), reference(variables('name_networkDeployment')).clusterLBSecuredUrl.value.value)]"
+              "value": "[if(parameters('enableAppGWIngress'), if(parameters('enableDNSConfiguration'), format('https://{0}', variables('const_appgwCustomDNSAlias')), reference(resourceId('Microsoft.Resources/deployments', 'app-gateway-deployment'), '2019-10-01').outputs.appGatewaySecuredURL.value), reference(variables('name_networkDeployment')).outputs.clusterLBSecuredUrl.value)]"
             },
             "clusterT3ChannelUrl": {
               "type": "string",
-              "value": "[reference(variables('name_networkDeployment')).clusterT3LBUrl.value.value]"
+              "value": "[reference(variables('name_networkDeployment')).outputs.clusterT3LBUrl.value]"
             }
           }
         }
@@ -7561,7 +7561,7 @@
     {
       "condition": "[parameters('enableDB')]",
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2020-06-01",
+      "apiVersion": "2019-10-01",
       "name": "datasource-deployment",
       "properties": {
         "expressionEvaluationOptions": {
@@ -7576,16 +7576,16 @@
             "value": "[parameters('_artifactsLocationSasToken')]"
           },
           "_pidEnd": {
-            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'initialization'), '2020-06-01').outputs.dbEnd.value]"
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'initialization'), '2019-10-01').outputs.dbEnd.value]"
           },
           "_pidStart": {
-            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'initialization'), '2020-06-01').outputs.dbStart.value]"
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', 'initialization'), '2019-10-01').outputs.dbStart.value]"
           },
           "aksClusterRGName": {
-            "value": "[reference(resourceId('Microsoft.Resources/deployments', if(parameters('enableCustomSSL'), 'setup-wls-cluster-with-custom-ssl-enabled', 'setup-wls-cluster'))).aksClusterRGName.value.value]"
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', if(parameters('enableCustomSSL'), 'setup-wls-cluster-with-custom-ssl-enabled', 'setup-wls-cluster'))).outputs.aksClusterRGName.value]"
           },
           "aksClusterName": {
-            "value": "[reference(resourceId('Microsoft.Resources/deployments', if(parameters('enableCustomSSL'), 'setup-wls-cluster-with-custom-ssl-enabled', 'setup-wls-cluster'))).aksClusterName.value.value]"
+            "value": "[reference(resourceId('Microsoft.Resources/deployments', if(parameters('enableCustomSSL'), 'setup-wls-cluster-with-custom-ssl-enabled', 'setup-wls-cluster'))).outputs.aksClusterName.value]"
           },
           "databaseType": {
             "value": "[parameters('databaseType')]"
@@ -7624,8 +7624,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.4.1008.15138",
-              "templateHash": "7571799785544485715"
+              "version": "0.4.451.19169",
+              "templateHash": "2339781904617772185"
             }
           },
           "parameters": {
@@ -7724,7 +7724,7 @@
           "resources": [
             {
               "type": "Microsoft.Resources/deployments",
-              "apiVersion": "2020-06-01",
+              "apiVersion": "2019-10-01",
               "name": "wls-aks-db-start-pid-deployment",
               "properties": {
                 "expressionEvaluationOptions": {
@@ -7742,8 +7742,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.4.1008.15138",
-                      "templateHash": "8805472380936134177"
+                      "version": "0.4.451.19169",
+                      "templateHash": "271164630090628396"
                     }
                   },
                   "parameters": {
@@ -7757,7 +7757,7 @@
                     {
                       "condition": "[not(equals(parameters('name'), 'pid'))]",
                       "type": "Microsoft.Resources/deployments",
-                      "apiVersion": "2020-06-01",
+                      "apiVersion": "2019-10-01",
                       "name": "[parameters('name')]",
                       "properties": {
                         "expressionEvaluationOptions": {
@@ -7770,8 +7770,8 @@
                           "metadata": {
                             "_generator": {
                               "name": "bicep",
-                              "version": "0.4.1008.15138",
-                              "templateHash": "14669053462841078328"
+                              "version": "0.4.451.19169",
+                              "templateHash": "4589167010597738390"
                             }
                           },
                           "functions": [],
@@ -7827,7 +7827,7 @@
             },
             {
               "type": "Microsoft.Resources/deployments",
-              "apiVersion": "2020-06-01",
+              "apiVersion": "2019-10-01",
               "name": "create-update-datasource",
               "properties": {
                 "expressionEvaluationOptions": {
@@ -7884,8 +7884,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.4.1008.15138",
-                      "templateHash": "6023401087828814504"
+                      "version": "0.4.451.19169",
+                      "templateHash": "7229459320818647774"
                     }
                   },
                   "parameters": {
@@ -7989,7 +7989,7 @@
             },
             {
               "type": "Microsoft.Resources/deployments",
-              "apiVersion": "2020-06-01",
+              "apiVersion": "2019-10-01",
               "name": "wls-aks-db-end-pid-deployment",
               "properties": {
                 "expressionEvaluationOptions": {
@@ -8007,8 +8007,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.4.1008.15138",
-                      "templateHash": "8805472380936134177"
+                      "version": "0.4.451.19169",
+                      "templateHash": "271164630090628396"
                     }
                   },
                   "parameters": {
@@ -8022,7 +8022,7 @@
                     {
                       "condition": "[not(equals(parameters('name'), 'pid'))]",
                       "type": "Microsoft.Resources/deployments",
-                      "apiVersion": "2020-06-01",
+                      "apiVersion": "2019-10-01",
                       "name": "[parameters('name')]",
                       "properties": {
                         "expressionEvaluationOptions": {
@@ -8035,8 +8035,8 @@
                           "metadata": {
                             "_generator": {
                               "name": "bicep",
-                              "version": "0.4.1008.15138",
-                              "templateHash": "14669053462841078328"
+                              "version": "0.4.451.19169",
+                              "templateHash": "4589167010597738390"
                             }
                           },
                           "functions": [],
@@ -8105,55 +8105,55 @@
   "outputs": {
     "aksClusterName": {
       "type": "string",
-      "value": "[reference(resourceId('Microsoft.Resources/deployments', if(parameters('enableCustomSSL'), 'setup-wls-cluster-with-custom-ssl-enabled', 'setup-wls-cluster'))).aksClusterName.value.value]"
+      "value": "[reference(resourceId('Microsoft.Resources/deployments', if(parameters('enableCustomSSL'), 'setup-wls-cluster-with-custom-ssl-enabled', 'setup-wls-cluster'))).outputs.aksClusterName.value]"
     },
     "adminConsoleInternalUrl": {
       "type": "string",
-      "value": "[reference(resourceId('Microsoft.Resources/deployments', if(parameters('enableCustomSSL'), 'setup-wls-cluster-with-custom-ssl-enabled', 'setup-wls-cluster'))).adminServerUrl.value.value]"
+      "value": "[reference(resourceId('Microsoft.Resources/deployments', if(parameters('enableCustomSSL'), 'setup-wls-cluster-with-custom-ssl-enabled', 'setup-wls-cluster'))).outputs.adminServerUrl.value]"
     },
     "adminConsoleExternalUrl": {
       "type": "string",
-      "value": "[if(variables('const_enableNetworking'), reference(resourceId('Microsoft.Resources/deployments', 'networking-deployment'), '2020-06-01').outputs.adminConsoleExternalUrl.value, '')]"
+      "value": "[if(variables('const_enableNetworking'), reference(resourceId('Microsoft.Resources/deployments', 'networking-deployment'), '2019-10-01').outputs.adminConsoleExternalUrl.value, '')]"
     },
     "adminConsoleExternalSecuredUrl": {
       "type": "string",
-      "value": "[if(variables('const_enableNetworking'), reference(resourceId('Microsoft.Resources/deployments', 'networking-deployment'), '2020-06-01').outputs.adminConsoleExternalSecuredUrl.value, '')]"
+      "value": "[if(variables('const_enableNetworking'), reference(resourceId('Microsoft.Resources/deployments', 'networking-deployment'), '2019-10-01').outputs.adminConsoleExternalSecuredUrl.value, '')]"
     },
     "adminRemoteConsoleUrl": {
       "type": "string",
-      "value": "[if(and(variables('const_enableNetworking'), not(parameters('enableCustomSSL'))), reference(resourceId('Microsoft.Resources/deployments', 'networking-deployment'), '2020-06-01').outputs.adminRemoteConsoleUrl.value, '')]"
+      "value": "[if(and(variables('const_enableNetworking'), not(parameters('enableCustomSSL'))), reference(resourceId('Microsoft.Resources/deployments', 'networking-deployment'), '2019-10-01').outputs.adminRemoteConsoleUrl.value, '')]"
     },
     "adminRemoteConsoleSecuredUrl": {
       "type": "string",
-      "value": "[if(variables('const_enableNetworking'), reference(resourceId('Microsoft.Resources/deployments', 'networking-deployment'), '2020-06-01').outputs.adminRemoteConsoleSecuredUrl.value, '')]"
+      "value": "[if(variables('const_enableNetworking'), reference(resourceId('Microsoft.Resources/deployments', 'networking-deployment'), '2019-10-01').outputs.adminRemoteConsoleSecuredUrl.value, '')]"
     },
     "adminServerT3InternalUrl": {
       "type": "string",
-      "value": "[reference(resourceId('Microsoft.Resources/deployments', if(parameters('enableCustomSSL'), 'setup-wls-cluster-with-custom-ssl-enabled', 'setup-wls-cluster'))).adminServerT3InternalUrl.value.value]"
+      "value": "[reference(resourceId('Microsoft.Resources/deployments', if(parameters('enableCustomSSL'), 'setup-wls-cluster-with-custom-ssl-enabled', 'setup-wls-cluster'))).outputs.adminServerT3InternalUrl.value]"
     },
     "adminServerT3ExternalUrl": {
       "type": "string",
-      "value": "[if(and(parameters('enableAdminT3Tunneling'), variables('const_enableNetworking')), format('{0}://{1}', if(parameters('enableCustomSSL'), 't3s', 't3'), reference(resourceId('Microsoft.Resources/deployments', 'networking-deployment'), '2020-06-01').outputs.adminServerT3ChannelUrl.value), '')]"
+      "value": "[if(and(parameters('enableAdminT3Tunneling'), variables('const_enableNetworking')), format('{0}://{1}', if(parameters('enableCustomSSL'), 't3s', 't3'), reference(resourceId('Microsoft.Resources/deployments', 'networking-deployment'), '2019-10-01').outputs.adminServerT3ChannelUrl.value), '')]"
     },
     "clusterInternalUrl": {
       "type": "string",
-      "value": "[reference(resourceId('Microsoft.Resources/deployments', if(parameters('enableCustomSSL'), 'setup-wls-cluster-with-custom-ssl-enabled', 'setup-wls-cluster'))).clusterSVCUrl.value.value]"
+      "value": "[reference(resourceId('Microsoft.Resources/deployments', if(parameters('enableCustomSSL'), 'setup-wls-cluster-with-custom-ssl-enabled', 'setup-wls-cluster'))).outputs.clusterSVCUrl.value]"
     },
     "clusterExternalUrl": {
       "type": "string",
-      "value": "[if(variables('const_enableNetworking'), reference(resourceId('Microsoft.Resources/deployments', 'networking-deployment'), '2020-06-01').outputs.clusterExternalUrl.value, '')]"
+      "value": "[if(variables('const_enableNetworking'), reference(resourceId('Microsoft.Resources/deployments', 'networking-deployment'), '2019-10-01').outputs.clusterExternalUrl.value, '')]"
     },
     "clusterExternalSecuredUrl": {
       "type": "string",
-      "value": "[if(variables('const_enableNetworking'), reference(resourceId('Microsoft.Resources/deployments', 'networking-deployment'), '2020-06-01').outputs.clusterExternalSecuredUrl.value, '')]"
+      "value": "[if(variables('const_enableNetworking'), reference(resourceId('Microsoft.Resources/deployments', 'networking-deployment'), '2019-10-01').outputs.clusterExternalSecuredUrl.value, '')]"
     },
     "clusterT3InternalUrl": {
       "type": "string",
-      "value": "[reference(resourceId('Microsoft.Resources/deployments', if(parameters('enableCustomSSL'), 'setup-wls-cluster-with-custom-ssl-enabled', 'setup-wls-cluster'))).clusterT3InternalUrl.value.value]"
+      "value": "[reference(resourceId('Microsoft.Resources/deployments', if(parameters('enableCustomSSL'), 'setup-wls-cluster-with-custom-ssl-enabled', 'setup-wls-cluster'))).outputs.clusterT3InternalUrl.value]"
     },
     "clusterT3ExternalUrl": {
       "type": "string",
-      "value": "[if(and(parameters('enableAdminT3Tunneling'), variables('const_enableNetworking')), format('{0}://{1}', if(parameters('enableCustomSSL'), 't3s', 't3'), reference(resourceId('Microsoft.Resources/deployments', 'networking-deployment'), '2020-06-01').outputs.clusterT3ChannelUrl.value), '')]"
+      "value": "[if(and(parameters('enableAdminT3Tunneling'), variables('const_enableNetworking')), format('{0}://{1}', if(parameters('enableCustomSSL'), 't3s', 't3'), reference(resourceId('Microsoft.Resources/deployments', 'networking-deployment'), '2019-10-01').outputs.clusterT3ChannelUrl.value), '')]"
     }
   }
 }
