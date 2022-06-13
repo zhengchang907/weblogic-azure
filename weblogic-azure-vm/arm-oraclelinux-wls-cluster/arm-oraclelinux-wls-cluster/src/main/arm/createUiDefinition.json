@@ -785,8 +785,8 @@
                             "subnets": "Subnets for the virtual network"
                         },
                         "defaultValue": {
-                            "name": "VirtualNetwork",
-                            "addressPrefixSize": "/28"
+                            "name": "wls-vnet",
+                            "addressPrefixSize": "/16"
                         },
                         "constraints": {
                             "minAddressPrefixSize": "/28"
@@ -796,7 +796,7 @@
                                 "label": "Subnet for WebLogic",
                                 "defaultValue": {
                                     "name": "wls-subnet",
-                                    "addressPrefixSize": "/29"
+                                    "addressPrefixSize": "/24"
                                 },
                                 "constraints": {
                                     "minAddressPrefixSize": "/29",
