@@ -735,7 +735,7 @@
     "resources": [
         {
             "apiVersion": "${azure.apiVersion}",
-            "name": "${cluster.start}",
+            "name": "pid-3d4478ae-55bc-46e8-b802-69740b93a24a-partnercenter",
             "type": "Microsoft.Resources/deployments",
             "properties": {
                 "mode": "Incremental",
