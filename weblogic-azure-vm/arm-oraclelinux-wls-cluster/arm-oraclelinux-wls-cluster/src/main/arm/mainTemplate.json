@@ -837,6 +837,9 @@
                     "wlsUserName": {
                         "value": "[parameters('wlsUserName')]"
                     },
+                    "enableAppGateway": {
+                        "value": "[parameters('enableAppGateway')]"
+                    },
                     "enableHTTPAdminListenPort":{
                         "value": "[parameters('enableHTTPAdminListenPort')]"
                     },
@@ -983,6 +986,9 @@
                     },
                     "wlsUserName": {
                         "value": "[parameters('wlsUserName')]"
+                    },
+                    "enableAppGateway": {
+                        "value": "[parameters('enableAppGateway')]"
                     },
                     "enableHTTPAdminListenPort":{
                         "value": "[parameters('enableHTTPAdminListenPort')]"

@@ -225,6 +225,13 @@
                 "description": "Boolean value indicating, if DNS Zone Configuration is enabled or not"
             }
         },
+        "enableAppGateway": {
+            "defaultValue": false,
+            "type": "bool",
+            "metadata": {
+                "description": "If true, deploy an Azure App Gateway in front of the nodes of the cluster"
+            }
+        },
         "customDNSNameForAdminServer": {
             "type": "string",
             "defaultValue": "none",
@@ -282,7 +289,41 @@
         "name_customHostnameGeneratorscriptFile": "generateCustomHostNameVerifier.sh",
         "name_customHostnameVerifierJavaFile": "src/main/java/WebLogicCustomHostNameVerifier.java",
         "name_customHostnameValuesTemplate": "src/main/java/HostNameValuesTemplate.txt",
-        "name_customHostnameVerifierTest" : "src/test/java/WebLogicCustomHostNameVerifierTest.java"
+        "name_customHostnameVerifierTest" : "src/test/java/WebLogicCustomHostNameVerifierTest.java",
+        "property_subnet_with_app_gateway": [
+            {
+                "name": "[variables('name_subnet')]",
+                "properties": {
+                    "addressPrefix": "[variables('const_subnetPrefix')]",
+                    "networkSecurityGroup": {
+                        "id": "[variables('ref_networkSecurityGroup')]"
+                    }
+                }
+            },
+            {
+                // PENDING(edburns): Assume it is acceptable to create a subnet for the App Gateway, even if the user
+                // has not requested an App Gateway.  In support of this assumption we can note: the user may want an App 
+                // Gateway after deployment.
+                "name": "[variables('name_appGatewaySubnet')]",
+                "properties": {
+                    "addressPrefix": "[variables('const_appGatewaySubnetPrefix')]",
+                    "networkSecurityGroup": {
+                        "id": "[variables('ref_networkSecurityGroup')]"
+                    }
+                }
+            }
+        ],
+        "property_subnet_without_app_gateway": [
+            {
+                "name": "[variables('name_subnet')]",
+                "properties": {
+                    "addressPrefix": "[variables('const_subnetPrefix')]",
+                    "networkSecurityGroup": {
+                        "id": "[variables('ref_networkSecurityGroup')]"
+                    }
+                }
+            }
+        ]
 
     },
     "resources": [
@@ -464,29 +505,7 @@
                 "addressSpace": {
                     "addressPrefixes": "[variables('const_addressPrefix')]"
                 },
-                "subnets": [
-                    {
-                        "name": "[variables('name_subnet')]",
-                        "properties": {
-                            "addressPrefix": "[variables('const_subnetPrefix')]",
-                            "networkSecurityGroup": {
-                                "id": "[variables('ref_networkSecurityGroup')]"
-                            }
-                        }
-                    },
-                    {
-                        // PENDING(edburns): Assume it is acceptable to create a subnet for the App Gateway, even if the user
-                        // has not requested an App Gateway.  In support of this assumption we can note: the user may want an App 
-                        // Gateway after deployment.
-                        "name": "[variables('name_appGatewaySubnet')]",
-                        "properties": {
-                            "addressPrefix": "[variables('const_appGatewaySubnetPrefix')]",
-                            "networkSecurityGroup": {
-                                "id": "[variables('ref_networkSecurityGroup')]"
-                            }
-                        }
-                    }
-                ]
+                "subnets": "[if(parameters('enableAppGateway'), variables('property_subnet_with_app_gateway'), variables('property_subnet_without_app_gateway'))]"
             }
         },
         {
