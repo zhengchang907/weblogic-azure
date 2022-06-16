@@ -484,7 +484,7 @@
         },
         "subnetForAppGateway": {
             "type": "string",
-            "defaultValue": "",
+            "defaultValue": "appgateway-subnet",
             "metadata": {
                 "description": "Name of the existing or new Subnet for Application Gateway"
             }
