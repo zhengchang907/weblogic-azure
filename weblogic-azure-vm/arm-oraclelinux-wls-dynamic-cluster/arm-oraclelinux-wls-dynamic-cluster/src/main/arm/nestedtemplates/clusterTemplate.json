@@ -427,9 +427,7 @@
             ],
             "properties": {
                 "addressSpace": {
-                    "addressPrefixes": [
-                        "[variables('const_addressPrefix')]"
-                    ]
+                    "addressPrefixes": "[variables('const_addressPrefix')]"
                 },
                 "subnets": [
                     {
