@@ -107,7 +107,7 @@
                 "owls-141100-jdk11-ol76;Oracle:weblogic-141100-jdk11-ol76:owls-141100-jdk11-ol7;latest",
                 "owls-122140-jdk8-rhel76;Oracle:weblogic-122140-jdk8-rhel76:owls-122140-jdk8-rhel76;latest",
                 "owls-141100-jdk8-rhel76;Oracle:weblogic-141100-jdk8-rhel76:owls-141100-jdk8-rhel76;latest",
-                "owls-141100-jdk11-rhel76;Oracle:weblogic-141100-jdk11-rhel76:owls-141100-jdk11-rhel76;latest"                
+                "owls-141100-jdk11-rhel76;Oracle:weblogic-141100-jdk11-rhel76:owls-141100-jdk11-rhel76;latest"
             ],
             "metadata": {
                 "description": "The Oracle Linux image with Weblogic and Java preinstalled. Semicolon separated string of Sku, URN, and Version"
@@ -138,50 +138,50 @@
             "type": "string",
             "defaultValue": "new",
             "allowedValues": [
-               "new",
-               "existing"
+                "new",
+                "existing"
             ],
             "metadata": {
-               "description": "Specify whether to create a new or existing virtual network for the VM."
+                "description": "Specify whether to create a new or existing virtual network for the VM."
             }
-         },
-         "virtualNetworkName": {
+        },
+        "virtualNetworkName": {
             "type": "string",
             "defaultValue": "wls-vnet",
             "metadata": {
-               "description": "Name of the existing or new VNET"
+                "description": "Name of the existing or new VNET"
             }
-         },
-         "virtualNetworkResourceGroupName": {
+        },
+        "virtualNetworkResourceGroupName": {
             "type": "string",
             "defaultValue": "[resourceGroup().name]",
             "metadata": {
-               "description": "Resource group of Virtual network"
+                "description": "Resource group of Virtual network"
             }
-         },
-         "addressPrefixes": {
+        },
+        "addressPrefixes": {
             "type": "array",
             "defaultValue": [
-               "10.0.0.0/28"
+                "10.0.0.0/28"
             ],
             "metadata": {
-               "description": "Address prefix of the VNET."
+                "description": "Address prefix of the VNET."
             }
-         },
-         "subnetName": {
+        },
+        "subnetName": {
             "type": "string",
             "defaultValue": "wls-subnet",
             "metadata": {
-               "description": "Name of the existing or new Subnet"
+                "description": "Name of the existing or new Subnet"
             }
-         },
-         "subnetPrefix": {
+        },
+        "subnetPrefix": {
             "type": "string",
             "defaultValue": "10.0.0.0/29",
             "metadata": {
-               "description": "Address prefix of the subnet"
+                "description": "Address prefix of the subnet"
             }
-         },
+        },
         "wlsDomainName": {
             "type": "string",
             "metadata": {
@@ -270,7 +270,7 @@
         "name_customHostnameGeneratorscriptFile": "generateCustomHostNameVerifier.sh",
         "name_customHostnameVerifierJavaFile": "src/main/java/WebLogicCustomHostNameVerifier.java",
         "name_customHostnameValuesTemplate": "src/main/java/HostNameValuesTemplate.txt",
-        "name_customHostnameVerifierTest" : "src/test/java/WebLogicCustomHostNameVerifierTest.java"
+        "name_customHostnameVerifierTest": "src/test/java/WebLogicCustomHostNameVerifierTest.java"
     },
     "resources": [
         {
@@ -356,24 +356,24 @@
             "type": "Microsoft.Network/privateEndpoints",
             "location": "[parameters('location')]",
             "properties": {
-                  "privateLinkServiceConnections": [
-                     {
+                "privateLinkServiceConnections": [
+                    {
                         "name": "[variables('name_privateSaEndpoint')]",
                         "properties": {
-                              "privateLinkServiceId": "[resourceId('Microsoft.Storage/storageAccounts/', variables('name_storageAccount'))]",
-                              "groupIds": [
-                                 "file"
-                              ]
+                            "privateLinkServiceId": "[resourceId('Microsoft.Storage/storageAccounts/', variables('name_storageAccount'))]",
+                            "groupIds": [
+                                "file"
+                            ]
                         }
-                     }
-                  ],
-                  "subnet": {
-                     "id": "[variables('ref_subnet')]"
-                  }
+                    }
+                ],
+                "subnet": {
+                    "id": "[variables('ref_subnet')]"
+                }
             },
             "dependsOn": [
-               "[resourceId('Microsoft.Storage/storageAccounts', variables('name_storageAccount'))]",
-               "[variables('name_virtualNetwork')]"
+                "[resourceId('Microsoft.Storage/storageAccounts', variables('name_storageAccount'))]",
+                "[variables('name_virtualNetwork')]"
             ]
         },
         {
@@ -517,6 +517,7 @@
             },
             "dependsOn": [
                 "nicLoop_public_ip",
+                "nicLoop_private_ip"
             ],
             "identity": "[if(parameters('useSystemAssignedManagedIdentity'), json('{\"type\":\"SystemAssigned\"}'), null())]",
             "properties": {
@@ -754,7 +755,7 @@
                     ]
                 }
             }
-        }        
+        }
     ],
     "outputs": {
         "_adminPublicIPId": {
