@@ -1785,9 +1785,6 @@
 					"oracleVaultPswd": {
 						"value": "[parameters('oracleVaultPswd')]"
 					},
-					"virtualNetworkNewOrExisting": {
-						"value": "[parameters('virtualNetworkNewOrExisting')]"
-					},
 					"virtualNetworkResourceGroupName": {
 						"value": "[parameters('virtualNetworkResourceGroupName')]"
 					},

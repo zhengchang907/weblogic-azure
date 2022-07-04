@@ -163,17 +163,6 @@
                 "description": "Name of the existing or new Subnet"
             }
         },
-        "virtualNetworkNewOrExisting": {
-            "type": "string",
-            "defaultValue": "new",
-            "allowedValues": [
-                "new",
-                "existing"
-            ],
-            "metadata": {
-                "description": "Specify whether to create a new or existing virtual network for the VM."
-            }
-        },
         "virtualNetworkResourceGroupName": {
             "type": "string",
             "defaultValue": "[resourceGroup().name]",
