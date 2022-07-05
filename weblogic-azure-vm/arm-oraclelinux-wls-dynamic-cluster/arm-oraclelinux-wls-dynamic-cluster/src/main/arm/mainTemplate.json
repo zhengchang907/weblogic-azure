@@ -1785,6 +1785,9 @@
 					"oracleVaultPswd": {
 						"value": "[parameters('oracleVaultPswd')]"
 					},
+					"virtualNetworkNewOrExisting": {
+						"value": "[parameters('virtualNetworkNewOrExisting')]"
+					},
 					"virtualNetworkResourceGroupName": {
 						"value": "[parameters('virtualNetworkResourceGroupName')]"
 					},
@@ -1912,7 +1915,7 @@
 		"ohsSecureAccessURL": {
 			"type": "string",
 			"condition": "[parameters('enableOHS')]",
-			"value": "[if(parameters('enableCustomDNS'), uri(format('https://{0}.{1}:{2}',parameters('dnszoneLoadBalancerLabel'),parameters('dnszoneName'),parameters('ohshttpsPort'))), reference('ohsLinkedTemplate', '${azure.apiVersion}').outputs.ohsSecureAccessURL.value)]"
+			"value": "[if(parameters('enableCustomDNS'), uri(format('https://{0}.{1}:{2}',parameters('dnszoneLoadBalancerLabel'),parameters('dnszoneName'),parameters('ohshttpsPort')),''), reference('ohsLinkedTemplate', '${azure.apiVersion}').outputs.ohsSecureAccessURL.value)]"
 		}
 	}
 }

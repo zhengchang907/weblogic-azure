@@ -163,6 +163,17 @@
                 "description": "Name of the existing or new Subnet"
             }
         },
+        "virtualNetworkNewOrExisting": {
+            "type": "string",
+            "defaultValue": "new",
+            "allowedValues": [
+                "new",
+                "existing"
+            ],
+            "metadata": {
+                "description": "Specify whether to create a new or existing virtual network for the VM."
+            }
+        },
         "virtualNetworkResourceGroupName": {
             "type": "string",
             "defaultValue": "[resourceGroup().name]",
@@ -226,6 +237,7 @@
     "resources": [
         {
             "type": "Microsoft.Network/networkSecurityGroups/securityRules",
+            "condition": "[equals(parameters('virtualNetworkNewOrExisting'), 'new')]",
             "name": "[concat( variables('name_networkSecurityGroup'),'/','OHSPorts')]",
             "apiVersion": "${azure.apiVersion}",
             "properties": {
